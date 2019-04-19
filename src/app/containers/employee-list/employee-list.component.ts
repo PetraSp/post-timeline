@@ -9,7 +9,7 @@ import {
   FormGroupDirective,
   NgForm
 } from '@angular/forms';
-import {ErrorStateMatcher} from '@angular/material/core';
+import { ErrorStateMatcher } from '@angular/material/core';
 
 export interface Employee {
   id: number;
@@ -39,30 +39,87 @@ const employees: Employee[] = [
 })
 
 export class EmployeeListComponent implements OnInit {
-  fields: string[] = ['id', 'username', 'phone', 'role', 'name'];
+  fields: string[] = ['ID', 'USERNAME', 'PHONE', 'ROLE', 'NAME'];
   employees: Employee[] = employees;
 
+  public username: AbstractControl;
+  public phone: AbstractControl;
+  public role: AbstractControl;
+  public name: AbstractControl;
+
+  public employeeAdd: FormGroup;
+
+  confirmValidParentMatcher = new ConfirmValidParentMatcher();
+  errors: { [key: string]: string } = {
+    username: 'Username is required and must not contain special characters',
+    phone: 'This phone is invalid',
+    role: 'Role is required',
+    name: 'Name is required',
+  };
+
   constructor(
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private fb: FormBuilder
   ) { }
 
   ngOnInit() {
+    this.initEmployeeAddForm();
+  }
 
+  onAddEmployee(event) {
+    this.employees.push(
+      {
+        id: this.employees.length > 0
+          ? this.employees[this.employees.length - 1].id + 1
+          : 1,
+        username: event.target[0].value,
+        phone: event.target[1].value,
+        role: event.target[2].value,
+        name: event.target[3].value
+      }
+    );
+  }
+
+  onDeleteEmployee(employeeId: 'string'): void {
+    const employeeIndex = employees.findIndex(employee => employee.id === Number(employeeId));
+    this.employees.splice(employeeIndex, 1);
   }
 
   onShowModal(employeeId: 'string'): void {
     this.dialog.open(EmployeeDetailComponent, {
-      width: '250px',
+      width: '230px',
       data: {
         employee: employees.filter(employee => employee.id === Number(employeeId))[0]
       }
+    });
+  }
+
+  public initEmployeeAddForm(): void {
+    this.employeeAdd  =  this.fb.group({
+      username: [
+        '',
+        [
+          Validators.required,
+          Validators.pattern('[\\w-_]+')
+        ]
+      ],
+      phone: [
+        '',
+        [
+          Validators.required,
+          Validators.pattern('^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$')
+        ]
+      ],
+      role: ['', Validators.required],
+      name: ['', Validators.required],
     });
   }
 }
 
 @Component({
   selector: 'app-edit-dialog',
-  templateUrl: 'edit-dialog-data.html',
+  templateUrl: './edit-dialog-data.html',
+  styleUrls: ['./edit-dialog-data.css']
 })
 
 export class EmployeeDetailComponent implements OnInit {
@@ -86,6 +143,10 @@ export class EmployeeDetailComponent implements OnInit {
 
   ngOnInit() {
     this.initEmployeeDetailForm();
+  }
+
+  onSubmit() {
+    // TODO: Add Update Logic
   }
 
   public initEmployeeDetailForm(): void {

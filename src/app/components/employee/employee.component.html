@@ -1,0 +1,14 @@
+<tr class="employee-data" (click)="onClickRow(data.id)">
+  <td *ngFor="let key of keys">
+    {{data[key]}}
+  </td>
+  <td>
+    <button
+      class="employee-delete"
+      mat-icon-button
+      (click)="onClickDeleteBtn(data.id); $event.stopPropagation();"
+    >
+      <mat-icon class="delete-icon">delete</mat-icon>
+    </button>
+  </td>
+</tr>

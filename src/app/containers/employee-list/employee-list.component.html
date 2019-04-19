@@ -1,16 +1,74 @@
-<div>
+<div class="employee-list">
+  <div class="employee-add">
+    <form
+      class="employee-add-form"
+      novalidate
+      [formGroup]="employeeAdd"
+      (ngSubmit)="onAddEmployee($event)"
+    >
+      <mat-form-field class="employee-field" floatLabel>
+        <input
+          matInput
+          placeholder="Username"
+          type="text"
+          formControlName="username"
+          [errorStateMatcher]="confirmValidParentMatcher"
+        />
+        <mat-error>{{errors.username}}</mat-error>
+      </mat-form-field>
+      <mat-form-field class="employee-field" floatLabel>
+        <input
+          matInput
+          placeholder="Phone"
+          type="phone"
+          formControlName="phone"
+          [errorStateMatcher]="confirmValidParentMatcher"
+        />
+        <mat-error>{{errors.phone}}</mat-error>
+      </mat-form-field>
+      <mat-form-field class="employee-field" floatLabel>
+        <input
+          matInput
+          placeholder="Role"
+          type="text"
+          formControlName="role"
+          [errorStateMatcher]="confirmValidParentMatcher"
+        />
+        <mat-error>{{errors.role}}</mat-error>
+      </mat-form-field>
+      <mat-form-field class="employee-field" floatLabel>
+        <input
+          matInput
+          placeholder="Name"
+          type="text"
+          formControlName="name"
+          [errorStateMatcher]="confirmValidParentMatcher"
+        />
+        <mat-error>{{errors.name}}</mat-error>
+      </mat-form-field>
+      <button
+        mat-raised-button
+        [disabled]='!employeeAdd.valid'
+        class="employee-add-btn"
+        color="primary"
+        type="submit"
+      >
+        Add
+      </button>
+    </form>
+  </div>
   <table>
     <tr>
       <th *ngFor="let field of fields">
         {{field}}
       </th>
     </tr>
-    <tr *ngFor="let employee of employees">
-      <app-employee
-        (showModal)='onShowModal($event)'
-        [data]='employee'
-      >
-      </app-employee>
-    </tr>
+    <app-employee
+      *ngFor="let employee of employees"
+      (deleteEmployee)='onDeleteEmployee($event)'
+      (showModal)='onShowModal($event)'
+      [data]='employee'
+    >
+    </app-employee>
   </table>
 </div>

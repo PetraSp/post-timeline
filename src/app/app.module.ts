@@ -5,6 +5,7 @@ import {
   MatButtonModule,
   MatDialogModule,
   MatFormFieldModule,
+  MatIconModule,
   MatInputModule,
   MatRippleModule
 } from '@angular/material';
@@ -35,6 +36,7 @@ import { EmployeeComponent } from './components/employee/employee.component';
     MatButtonModule,
     MatDialogModule,
     MatFormFieldModule,
+    MatIconModule,
     MatRippleModule,
     MatInputModule,
     FormsModule,

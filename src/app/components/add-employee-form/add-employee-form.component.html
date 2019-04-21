@@ -1,0 +1,21 @@
+<form class="employee-add-form" novalidate [formGroup]="employeeAdd" (ngSubmit)="onClickAddBtn()">
+  <div class="employee-data-wrapper">
+    <mat-form-field class="employee-field" floatLabel>
+      <input matInput placeholder="Username" type="text" formControlName="username" [errorStateMatcher]="confirmValidMatcher" />
+      <mat-error>{{errors.username}}</mat-error>
+    </mat-form-field>
+    <mat-form-field class="employee-field" floatLabel>
+      <input matInput placeholder="Phone" type="phone" formControlName="phone" [errorStateMatcher]="confirmValidMatcher" />
+      <mat-error>{{errors.phone}}</mat-error>
+    </mat-form-field>
+    <mat-form-field class="employee-field" floatLabel>
+      <input matInput placeholder="Role" type="text" formControlName="role" [errorStateMatcher]="confirmValidMatcher" />
+      <mat-error>{{errors.role}}</mat-error>
+    </mat-form-field>
+    <mat-form-field class="employee-field" floatLabel>
+      <input matInput placeholder="Name" type="text" formControlName="name" [errorStateMatcher]="confirmValidMatcher" />
+      <mat-error>{{errors.name}}</mat-error>
+    </mat-form-field>
+  </div>
+  <button mat-raised-button [disabled]='!employeeAdd.valid' class="employee-add-btn" color="primary" type="submit">Add</button>
+</form>

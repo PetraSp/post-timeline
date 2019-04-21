@@ -1,0 +1,40 @@
+.employee-add-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 30px;
+}
+
+.employee-field {
+    min-height: 80px;
+    min-width: 80px;
+}
+
+.employee-data-wrapper {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+@media screen and (min-width: 720px) {
+    .employee-add-form {
+        justify-content: center;
+        max-width: 840px;
+        flex-wrap: wrap;
+        flex-direction: row;
+    }
+
+    .employee-data-wrapper {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .employee-field {
+        min-width: 150px;
+    }
+}

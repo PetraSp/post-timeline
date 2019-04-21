@@ -1,0 +1,11 @@
+<form class="post-add-form" novalidate [formGroup]="postAdd" (ngSubmit)="onClickAddBtn()">
+  <mat-form-field class="post-field" floatLabel>
+    <input matInput placeholder="Employee" type="text" formControlName="employee" [errorStateMatcher]="confirmValidPMatcher" />
+    <mat-error>{{errors.employee}}</mat-error>
+  </mat-form-field>
+  <mat-form-field class="post-field" floatLabel>
+    <textarea matInput placeholder="Message" type="text" formControlName="message" [errorStateMatcher]="confirmValidPMatcher">Message</textarea>
+    <mat-error>{{errors.message}}</mat-error>
+  </mat-form-field>
+  <button mat-raised-button [disabled]='!postAdd.valid' class="post-add-btn" color="primary" type="submit">Create</button>
+</form>

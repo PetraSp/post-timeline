@@ -1,30 +1,40 @@
 td {
-  max-width: 150px;
   min-width: 150px;
-  border-bottom: 1px solid black;
   padding: 15px 0px 15px 20px;
   margin: 0;
   text-overflow: ellipsis;
   white-space: nowrap;
-  overflow: hidden;
 }
 
 td:first-of-type {
   min-width: 20px;
 }
 
-td:last-of-type {
-  max-width: 60px;
-  min-width: 60px;
-  padding: 0;
-  border-bottom: 0;
+.employee-item {
+  display: flex;
+  flex-direction: column;
 }
 
-.employee-delete {
-  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+.employee-data {
+  display: flex;
+}
+
+.employee-actions {
+  display: flex;
+  min-width: 60px;
+  padding: 0;
+}
+
+.action-icon {
   margin-left: 10px;
 }
 
 .delete-icon {
-  color: #be0000;
+   color: #be0000;
+ }
+
+@media screen and (min-width: 720px) {
+  .employee-item {
+    flex-direction: row;
+  }
 }

@@ -15,19 +15,24 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { PostComponent } from './components/post/post.component';
 import { TimelineComponent } from './containers/timeline/timeline.component';
-import {EmployeeDetailComponent, EmployeeListComponent} from './containers/employee-list/employee-list.component';
+import { EmployeeListComponent} from './containers/employee-list/employee-list.component';
 import { EmployeeComponent } from './components/employee/employee.component';
+import { EditDialogDataComponent } from './components/edit-dialog-data/edit-dialog-data.component';
+import { AddEmployeeFormComponent } from './components/add-employee-form/add-employee-form.component';
+import { AddPostFormComponent } from './components/add-post-form/add-post-form.component';
 
 @NgModule({
 
-  entryComponents: [EmployeeListComponent, EmployeeDetailComponent],
+  entryComponents: [EmployeeListComponent, EditDialogDataComponent],
   declarations: [
     AppComponent,
     PostComponent,
     EmployeeListComponent,
     TimelineComponent,
     EmployeeComponent,
-    EmployeeDetailComponent
+    EditDialogDataComponent,
+    AddEmployeeFormComponent,
+    AddPostFormComponent
   ],
   imports: [
     BrowserModule,

@@ -22,7 +22,7 @@ export class EmployeeComponent implements OnInit {
     this.showModal.emit(id);
   }
 
-  onClickDeleteBtn(event: string) {
+  onClickDeleteBtn(event) {
     this.deleteEmployee.emit(event);
   }
 }

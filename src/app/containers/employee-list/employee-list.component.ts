@@ -59,12 +59,12 @@ export class EmployeeListComponent implements OnInit {
   }
 
   onShowModal(employeeId: string): void {
-    const employeeSel = employees.filter(employee => employee.id === Number(employeeId))[0];
-    const employeeSelId = employeeSel.id;
+    const selectedEmployee = employees.filter(employee => employee.id === Number(employeeId))[0];
+    const employeeSelId = selectedEmployee.id;
     const dialogRef = this.dialog.open(EditDialogDataComponent, {
       width: '230px',
       data: {
-        employee: employeeSel,
+        employee: selectedEmployee,
         phoneList: employees
             .filter(employee => employee.id !== Number(employeeSelId))
             .map(employee => employee.phone)

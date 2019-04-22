@@ -16,6 +16,9 @@
     <input matInput placeholder="Name" type="text" formControlName="name" [errorStateMatcher]="confirmValidMatcher" />
     <mat-error>{{errors.name}}</mat-error>
   </mat-form-field>
+  <button mat-raised-button mat-dialog-close>
+    Cancel
+  </button>
   <button [disabled]='!employeeDetail.valid' class="edit-form__button" color="primary" type="submit" mat-raised-button (click)="save()">
     Save
   </button>

@@ -1,3 +1,7 @@
 .employee-field {
     min-height: 80px;
 }
+
+.edit-form__button {
+  margin-left: 10px;
+}

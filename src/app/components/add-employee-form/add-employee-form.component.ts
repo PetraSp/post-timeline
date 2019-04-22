@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild} from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
 import { uniquePhone } from '../../validators/phone.validator';
@@ -10,13 +10,14 @@ import { Employee } from '../../containers/employee-list/employee-list.component
   styleUrls: ['./add-employee-form.component.css']
 })
 
-export class AddEmployeeFormComponent implements OnInit {
+export class AddEmployeeFormComponent implements OnInit, OnChanges {
   @Input() employees: Employee[];
   @Output() addEmployee: EventEmitter<Employee> = new EventEmitter<Employee>();
   public username: AbstractControl;
   public phone: AbstractControl;
   public role: AbstractControl;
   public name: AbstractControl;
+  public invalidPhoneList: string[];
 
   public employeeAdd: FormGroup;
 
@@ -34,14 +35,50 @@ export class AddEmployeeFormComponent implements OnInit {
 
   ngOnInit() {
     this.initEmployeeAddForm();
+    // this.onFormChanges();
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    console.log(changes.employees);
+    if (typeof(changes.employees.previousValue) !== 'undefined' && changes.employees && changes.employees.currentValue) {
+      console.log('enter');
+      this.invalidPhoneList = changes.employees.currentValue.map(employee => employee.phone);
+      this.employeeAdd.get('phone').setValidators(
+        [
+          Validators.required,
+          Validators.pattern('^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$'),
+          uniquePhone(this.invalidPhoneList)
+        ]
+      );
+    }
+  }
+
+  onFormChanges() {
+    this.employeeAdd.valueChanges.subscribe(val => {
+      console.log(val);
+      this.employeeAdd.get('phone').setValidators(
+        [
+          Validators.required,
+          Validators.pattern('^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$'),
+          uniquePhone(this.invalidPhoneList)
+        ]
+      );
+    });
   }
 
   onClickAddBtn() {
     this.addEmployee.emit(this.employeeAdd.value);
+    this.employeeAdd.reset();
+    this.employeeAdd.get('phone').setValidators(
+      [
+        Validators.required,
+        Validators.pattern('^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$'),
+        uniquePhone(this.invalidPhoneList)
+      ]
+    );
   }
 
   public initEmployeeAddForm(): void {
-    const phoneList = this.employees.map(employee => employee.phone);
     this.employeeAdd  =  this.fb.group({
       username: [
         '',
@@ -55,7 +92,7 @@ export class AddEmployeeFormComponent implements OnInit {
         [
           Validators.required,
           Validators.pattern('^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$'),
-          uniquePhone(phoneList)
+          uniquePhone(this.invalidPhoneList)
         ]
       ],
       role: ['', Validators.required],

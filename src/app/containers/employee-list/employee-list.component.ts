@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { EditDialogDataComponent } from '../../components/edit-dialog-data/edit-dialog-data.component';
 import { MatDialog } from '@angular/material';
 
+import { LocalStorageService } from '../../services/localStorage.service';
+
 export interface Employee {
   id: number;
   username: string;
@@ -9,14 +11,6 @@ export interface Employee {
   role: string;
   name: string;
 }
-
-const employees: Employee[] = [
-  {id: 1, username: 'mathilde', phone: '992312312', role: 'CEO', name: 'Mathilde Saylors'},
-  {id: 2, username: 'alia', phone: '986733445', role: 'Designer', name: 'Alia Ginder'},
-  {id: 3, username: 'freeman', phone: '971232343', role: 'Developer', name: 'Freeman Litten'},
-  {id: 4, username: 'piedad', phone: '992362345', role: 'Sales', name: 'Piedad Dewald'},
-  {id: 5, username: 'beau', phone: '912342303', role: 'PR', name: 'Beau Siegel'},
-];
 
 @Component({
   selector: 'app-employee-list',
@@ -26,11 +20,13 @@ const employees: Employee[] = [
 
 export class EmployeeListComponent implements OnInit {
   fields: string[] = ['ID', 'USERNAME', 'PHONE', 'ROLE', 'NAME'];
-  employees: Employee[] = employees;
+  employees: Employee[];
 
-  constructor(public dialog: MatDialog) { }
+  constructor(public dialog: MatDialog, public storageService: LocalStorageService) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.employees = this.storageService.get('employees');
+  }
 
   onAddEmployee(employee: Employee) {
     this.employees = [
@@ -42,12 +38,14 @@ export class EmployeeListComponent implements OnInit {
         ...employee
       }
     ];
+    this.storageService.set('employees', this.employees);
   }
 
   onDeleteEmployee(employeeId: string): void {
     const filteredEmployees = this.employees
         .filter(employee => employee.id !== Number(employeeId));
     this.employees = filteredEmployees;
+    this.storageService.set('employees', this.employees);
   }
 
   onEditEmployee(updatedEmployee): void {
@@ -56,16 +54,17 @@ export class EmployeeListComponent implements OnInit {
       ...prevEmployees.filter(prevEmployee => prevEmployee.id !== Number(updatedEmployee.id)),
       updatedEmployee
     ].sort((employeeA, employeeB) => (employeeA.id - employeeB.id));
+    this.storageService.set('employees', this.employees);
   }
 
   onShowModal(employeeId: string): void {
-    const selectedEmployee = employees.filter(employee => employee.id === Number(employeeId))[0];
+    const selectedEmployee = this.employees.filter(employee => employee.id === Number(employeeId))[0];
     const employeeSelId = selectedEmployee.id;
     const dialogRef = this.dialog.open(EditDialogDataComponent, {
       width: '230px',
       data: {
         employee: selectedEmployee,
-        phoneList: employees
+        phoneList: this.employees
             .filter(employee => employee.id !== Number(employeeSelId))
             .map(employee => employee.phone)
       }

@@ -35,35 +35,19 @@ export class AddEmployeeFormComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.initEmployeeAddForm();
-    // this.onFormChanges();
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    console.log(changes.employees);
-    if (typeof(changes.employees.previousValue) !== 'undefined' && changes.employees && changes.employees.currentValue) {
-      console.log('enter');
+    if (changes.employees && !!changes.employees.currentValue && !!changes.employees.previousValue) {
       this.invalidPhoneList = changes.employees.currentValue.map(employee => employee.phone);
       this.employeeAdd.get('phone').setValidators(
-        [
-          Validators.required,
-          Validators.pattern('^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$'),
-          uniquePhone(this.invalidPhoneList)
-        ]
+          [
+            Validators.required,
+            Validators.pattern('^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$'),
+            uniquePhone(this.invalidPhoneList)
+          ]
       );
     }
-  }
-
-  onFormChanges() {
-    this.employeeAdd.valueChanges.subscribe(val => {
-      console.log(val);
-      this.employeeAdd.get('phone').setValidators(
-        [
-          Validators.required,
-          Validators.pattern('^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$'),
-          uniquePhone(this.invalidPhoneList)
-        ]
-      );
-    });
   }
 
   onClickAddBtn() {

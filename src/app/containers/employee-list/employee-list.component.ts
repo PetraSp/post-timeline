@@ -26,6 +26,9 @@ export class EmployeeListComponent implements OnInit {
 
   ngOnInit() {
     this.employees = this.storageService.get('employees');
+    if (!this.employees) {
+      this.employees = [];
+    }
   }
 
   onAddEmployee(employee: Employee) {
